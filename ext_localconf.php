@@ -41,7 +41,14 @@ if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
     ];
 
     // Small override for record-localize controller to manipulate the record listing to provide child records in list
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Controller\Page\LocalizationController::class]['className'] = \FluidTYPO3\Flux\Integration\Overrides\LocalizationController::class;
+    \FluidTYPO3\Flux\Utility\CompatibilityRegistry::register(
+        \TYPO3\CMS\Backend\Controller\Page\LocalizationController::class,
+        [
+            '9.0' => \FluidTYPO3\Flux\Integration\Overrides\LocalizationController::class,
+        ]
+    );
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Controller\Page\LocalizationController::class]['className'] =
+        \FluidTYPO3\Flux\Utility\CompatibilityRegistry::get(\TYPO3\CMS\Backend\Controller\Page\LocalizationController::class, null, null);
 
     // Various hooks needed to operate Flux
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing']['flux'] =
